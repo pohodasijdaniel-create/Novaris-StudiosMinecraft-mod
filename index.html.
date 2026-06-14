@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novaris Studios</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#0a0d14;
+    color:white;
+}
+
+header{
+    text-align:center;
+    padding:100px 20px;
+    background:linear-gradient(135deg,#0057b7,#ffd700);
+}
+
+header h1{
+    font-size:64px;
+    margin-bottom:15px;
+}
+
+header p{
+    font-size:22px;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+    padding:60px 0;
+}
+
+.section-title{
+    text-align:center;
+    font-size:40px;
+    margin-bottom:40px;
+}
+
+.about{
+    text-align:center;
+    font-size:20px;
+    line-height:1.8;
+}
+
+.mods{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:#151b2d;
+    padding:30px;
+    border-radius:20px;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+.card h3{
+    font-size:28px;
+    margin-bottom:15px;
+}
+
+.card p{
+    color:#cfcfcf;
+}
+
+.links{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.btn{
+    text-decoration:none;
+    color:white;
+    background:#0057b7;
+    padding:15px 30px;
+    border-radius:12px;
+    font-size:18px;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#0d6efd;
+}
+
+footer{
+    text-align:center;
+    padding:40px;
+    background:#111827;
+    margin-top:50px;
+}
+
+footer p{
+    color:#bdbdbd;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Novaris Studios</h1>
+    <p>Українська команда розробників модів для Minecraft</p>
+</header>
+
+<section class="container">
+    <h2 class="section-title">Про нас</h2>
+
+    <div class="about">
+        <p>
+            Novaris Studios — команда розробників модів для Minecraft.
+            Ми створюємо український контент, нових мобів,
+            декоративні блоки та цікаві механіки для гри.
+        </p>
+    </div>
+</section>
+
+<section class="container">
+    <h2 class="section-title">Наші проєкти</h2>
+
+    <div class="mods">
+
+        <div class="card">
+            <h3>🇺🇦 Ukraine Symvols</h3>
+            <p>Мод, який додає українську символіку до Minecraft.</p>
+        </div>
+
+        <div class="card">
+            <h3>🏦 PrivatBank</h3>
+            <p>Мод з тематикою PrivatBank та банківських систем.</p>
+        </div>
+
+        <div class="card">
+            <h3>🐗 Kabanchyk</h3>
+            <p>Новий моб Кабанчик для Minecraft.</p>
+        </div>
+
+    </div>
+</section>
+
+<section class="container">
+    <h2 class="section-title">Наші соцмережі</h2>
+
+    <div class="links">
+
+        <a class="btn" href="https://t.me/Novaris_Studios" target="_blank">
+        📢 Telegram
+        </a>
+
+        <a class="btn" href="https://discord.gg/Xh2Y8T8yrz" target="_blank">
+        💬 Discord
+        </a>
+
+        <a class="btn" href="https://www.youtube.com/channel/UCalL0_g_-O_WrXRYTz9uuvA" target="_blank">
+        ▶ YouTube
+        </a>
+
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Novaris Studios</p>
+</footer>
+
+</body>
+</html>
