@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Panel | Novaris Studios</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #141c30;
+      --text: #f4f7ff;
+      --muted: #aab5ca;
+      --accent: #54b9ff;
+      --border: #27334d;
+      --danger: #ff6878;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    header {
+      background: #0e1527;
+      border-bottom: 1px solid var(--border);
+      padding: 18px;
+    }
+
+    .nav, main {
+      max-width: 950px;
+      width: calc(100% - 32px);
+      margin: auto;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      color: var(--accent);
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    main { padding: 28px 0 60px; }
+
+    h1 { font-size: clamp(28px, 5vw, 42px); }
+    h2 { margin-top: 0; }
+    p { color: var(--muted); }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 6px;
+      font-weight: bold;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #0b1020;
+      color: var(--text);
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 95px;
+      resize: vertical;
+    }
+
+    input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+    }
+
+    button, .button {
+      display: inline-block;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 11px 15px;
+      background: #1c2942;
+      color: var(--text);
+      font: inherit;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    button:hover, .button:hover {
+      border-color: var(--accent);
+    }
+
+    button:disabled { opacity: .6; cursor: wait; }
+
+    .primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #07111e;
+      font-weight: bold;
+    }
+
+    .danger { color: var(--danger); }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .project {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .project:last-child { border-bottom: 0; }
+
+    .project h3 { margin-bottom: 5px; }
+
+    .status {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 20px;
+      background: #20354f;
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    .hidden { display: none !important; }
+
+    #message, #login-message {
+      margin-top: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .note {
+      border-left: 3px solid var(--accent);
+      padding: 10px 14px;
+      background: #101b30;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">NOVARIS STUDIOS · ADMIN</div>
+    <a class="button" href="index.html">← На сайт</a>
+  </div>
+</header>
+
+<main>
+  <h1>Адмін-панель</h1>
+  <p>Керуй проєктами своєї студії.</p>
+
+  <section class="panel" id="login-panel">
+    <h2>Вхід адміністратора</h2>
+    <p>Увійди за допомогою свого акаунта Firebase.</p>
+
+    <form id="login-form">
+      <label for="email">Електронна пошта</label>
+      <input id="email" type="email" autocomplete="username" required>
+
+      <label for="password">Пароль</label>
+      <input id="password" type="password"
+             autocomplete="current-password" required>
+
+      <div class="actions">
+        <button class="primary" id="login-button" type="submit">
+          Увійти
+        </button>
+      </div>
+    </form>
+
+    <div id="login-message" role="status"></div>
+  </section>
+
+  <div id="dashboard" class="hidden">
+
+    <section class="panel">
+      <h2 id="form-title">Додати новий проєкт</h2>
+
+      <form id="project-form">
+        <label for="title">Назва проєкту *</label>
+        <input id="title" maxlength="100" required>
+
+        <label for="description">Опис *</label>
+        <textarea id="description" maxlength="1000" required></textarea>
+
+        <label for="status">Статус</label>
+        <select id="status">
+          <option>У розробці</option>
+          <option>Опубліковано</option>
+          <option>Завершено</option>
+          <option>Призупинено</option>
+        </select>
+
+        <label for="image">Посилання на зображення</label>
+        <input id="image" type="url" placeholder="https://...">
+
+        <label for="link">Посилання на гру або мод</label>
+        <input id="link" type="url" placeholder="https://...">
+
+        <label for="date">Дата проєкту *</label>
+        <input id="date" type="date" required>
+
+        <label>
+          <input id="published" type="checkbox" checked>
+          Опублікувати проєкт на сайті
+        </label>
+
+        <div class="actions">
+          <button class="primary" id="save-button" type="submit">
+            Зберегти проєкт
+          </button>
+
+          <button id="cancel-button" type="button" class="hidden">
+            Скасувати редагування
+          </button>
+        </div>
+      </form>
+
+      <div id="message" role="status"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Усі проєкти</h2>
+      <p>Тут видно і опубліковані проєкти, і чернетки.</p>
+      <div id="project-list">Завантаження...</div>
+    </section>
+
+    <button id="logout-button" class="danger">Вийти з акаунта</button>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from
+    "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+  } from
+    "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    doc,
+    updateDoc,
+    deleteDoc,
+    query,
+    orderBy,
+    serverTimestamp
+  } from
+    "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+  // Firebase configuration: Novaris Studios
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWgv7KAkF3j1bbZZUEHavLY0KC04Z21UI",
+    authDomain: "novaris-studios-3f092.firebaseapp.com",
+    projectId: "novaris-studios-3f092",
+    storageBucket: "novaris-studios-3f092.firebasestorage.app",
+    messagingSenderId: "412898138022",
+    appId: "1:412898138022:web:8a86f592b1e821c12fa167",
+    measurementId: "G-R1447E7N08"
+  };
+
+  // Твій Firebase User UID
+  const ADMIN_UID = "hYJgypHn6bVsUeg3vsaGF1g1UEH2";
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const $ = id => document.getElementById(id);
+
+  let editingId = null;
+  let busy = false;
+
+  function message(id, text, error = false) {
+    $(id).textContent = text;
+    $(id).style.color = error ? "#ff6878" : "#54b9ff";
+  }
+
+  function validUrl(value) {
+    if (!value) return "";
+
+    try {
+      const url = new URL(value);
+      return ["https:", "http:"].includes(url.protocol)
+        ? url.href
+        : "";
+    } catch {
+      return "";
+    }
+  }
+
+  function resetForm() {
+    $("project-form").reset();
+    $("date").value = new Date().toISOString().slice(0, 10);
+    $("published").checked = true;
+
+    editingId = null;
+    $("form-title").textContent = "Додати новий проєкт";
+    $("save-button").textContent = "Зберегти проєкт";
+    $("cancel-button").classList.add("hidden");
+  }
+
+  function makeButton(text, callback, className = "") {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = text;
+    button.className = className;
+    button.addEventListener("click", callback);
+    return button;
+  }
+
+  async function loadProjects() {
+    const list = $("project-list");
+    list.textContent = "Завантаження...";
+
+    try {
+      const result = await getDocs(query(
+        collection(db, "projects"),
+        orderBy("date", "desc")
+      ));
+
+      list.replaceChildren();
+
+      if (result.empty) {
+        list.textContent = "Проєктів поки немає. Додай перший!";
+        return;
+      }
+
+      result.forEach(snapshot => {
+        const project = snapshot.data();
+        const article = document.createElement("article");
+        article.className = "project";
+
+        const title = document.createElement("h3");
+        title.textContent = project.title || "Без назви";
+
+        const description = document.createElement("p");
+        description.textContent = project.description || "";
+
+        const status = document.createElement("span");
+        status.className = "status";
+        status.textContent =
+          (project.published ? "Опубліковано" : "Чернетка") +
+          " · " + (project.status || "Без статусу");
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        actions.append(
+          makeButton("Редагувати", () => {
+            editingId = snapshot.id;
+
+            $("title").value = project.title || "";
+            $("description").value = project.description || "";
+            $("status").value = project.status || "У розробці";
+            $("image").value = project.image || "";
+            $("link").value = project.link || "";
+            $("date").value = project.date || "";
+            $("published").checked = !!project.published;
+
+            $("form-title").textContent = "Редагування проєкту";
+            $("save-button").textContent = "Зберегти зміни";
+            $("cancel-button").classList.remove("hidden");
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }),
+
+          makeButton("Видалити", async () => {
+            if (!confirm("Точно видалити цей проєкт?")) return;
+
+            try {
+              await deleteDoc(doc(db, "projects", snapshot.id));
+              message("message", "Проєкт видалено.");
+              await loadProjects();
+            } catch (error) {
+              message("message", "Помилка видалення: " + error.message, true);
+            }
+          }, "danger")
+        );
+
+        article.append(title, description, status, actions);
+        list.appendChild(article);
+      });
+    } catch (error) {
+      list.textContent = "Не вдалося завантажити проєкти: " + error.message;
+    }
+  }
+
+  $("login-form").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (busy) return;
+    busy = true;
+    $("login-button").disabled = true;
+    message("login-message", "Виконується вхід...");
+
+    try {
+      const credential = await signInWithEmailAndPassword(
+        auth,
+        $("email").value.trim(),
+        $("password").value
+      );
+
+      if (credential.user.uid !== ADMIN_UID) {
+        await signOut(auth);
+        message("login-message", "Цей акаунт не має прав адміністратора.", true);
+      }
+    } catch (error) {
+      message("login-message", "Не вдалося увійти: " + error.message, true);
+    } finally {
+      busy = false;
+      $("login-button").disabled = false;
+    }
+  });
+
+  onAuthStateChanged(auth, async user => {
+    const isAdmin = !!user && user.uid === ADMIN_UID;
+
+    $("login-panel").classList.toggle("hidden", isAdmin);
+    $("dashboard").classList.toggle("hidden", !isAdmin);
+
+    if (user && !isAdmin) {
+      await signOut(auth);
+      message("login-message", "Доступ заборонено.", true);
+      return;
+    }
+
+    if (isAdmin) {
+      resetForm();
+      await loadProjects();
+    }
+  });
+
+  $("project-form").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (busy) return;
+
+    const user = auth.currentUser;
+
+    if (!user || user.uid !== ADMIN_UID) {
+      message("message", "Спочатку увійди як адміністратор.", true);
+      return;
+    }
+
+    const project = {
+      title: $("title").value.trim(),
+      description: $("description").value.trim(),
+      status: $("status").value,
+      image: validUrl($("image").value.trim()),
+      link: validUrl($("link").value.trim()),
+      date: $("date").value,
+      published: $("published").checked,
+      updatedAt: serverTimestamp()
+    };
+
+    if (!project.title || !project.description || !project.date) {
+      message("message", "Заповни назву, опис і дату.", true);
+      return;
+    }
+
+    busy = true;
+    $("save-button").disabled = true;
+
+    try {
+      if (editingId) {
+        await updateDoc(doc(db, "projects", editingId), project);
+        message("message", "Зміни успішно збережено!");
+      } else {
+        await addDoc(collection(db, "projects"), {
+          ...project,
+          createdAt: serverTimestamp()
+        });
+        message("message", "Проєкт успішно додано!");
+      }
+
+      resetForm();
+      await loadProjects();
+    } catch (error) {
+      message("message", "Помилка збереження: " + error.message, true);
+    } finally {
+      busy = false;
+      $("save-button").disabled = false;
+    }
+  });
+
+  $("cancel-button").addEventListener("click", resetForm);
+
+  $("logout-button").addEventListener("click", async () => {
+    await signOut(auth);
+  });
+
+  $("date").value = new Date().toISOString().slice(0, 10);
+</script>
+
+</body>
+</html>
